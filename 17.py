@@ -26,7 +26,7 @@ g=sp.Matrix([[-(1-2*M/r),0,0,0],
              [0,0,r**2,0],
              [0,0,0,r**2*sp.sin(theta)**2]])
 
-#Christoffel symbol^alpha_beta_gamma
+#Christoffel symbol^a_b_g
 CS=[[[sum(g.inv()[e,a]*(g[e,b].diff(x[c])
                        +g[e,c].diff(x[b])
                        -g[b,c].diff(x[e])) for e in d)/2

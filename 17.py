@@ -25,11 +25,12 @@ g=sp.Matrix([[-(1-2*M/r),0,0,0],
              [0,(1-2*M/r)**-1,0,0],
              [0,0,r**2,0],
              [0,0,0,r**2*sp.sin(theta)**2]])
+ginv=g.inv()#g^a^b
 
 #Christoffel symbol^a_b_g
-CS=[[[sum(g.inv()[e,a]*(g[e,b].diff(x[c])
-                       +g[e,c].diff(x[b])
-                       -g[b,c].diff(x[e])) for e in d)/2
+CS=[[[sum(ginv[e,a]*(g[e,b].diff(x[c])
+                    +g[e,c].diff(x[b])
+                    -g[b,c].diff(x[e])) for e in d)/2
       for c in d] for b in d] for a in d]
 
 #Ricci curvature_a_b  through formula 2.33 in book

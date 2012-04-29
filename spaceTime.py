@@ -5,9 +5,9 @@ class SpaceTime(object):
         self.ginv=self.g.inv()
         d=self.d=range(len(self.x))
         #Christoffel symbol^a_b_g
-        self.CS=[[[sum(self.ginv[e,a]*(self.g[e,b].diff(self.x[c])
+        self.CS=[[[(sum(self.ginv[e,a]*(self.g[e,b].diff(self.x[c])
                         +self.g[e,c].diff(self.x[b])
-                        -self.g[b,c].diff(self.x[e])) for e in d)/2
+                        -self.g[b,c].diff(self.x[e])) for e in d)/2)
           for c in d] for b in d] for a in d]
 
         #Ricci curvature_a_b  through formula 2.33 in hartle

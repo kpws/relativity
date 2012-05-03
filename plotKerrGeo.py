@@ -8,7 +8,7 @@ def plotGeo(M,a):
     re=M+np.sqrt(M**2-a**2*0)
     OmegaH=a/(2*M*rp)
 
-    phi=np.linspace(-np.pi,np.pi,100)
+    phi=np.linspace(-np.pi,np.pi,300)
     pl.plot(rp*np.cos(phi),rp*np.sin(phi),'b',label='Outer event horizon')
     pl.plot(rm*np.cos(phi),rm*np.sin(phi),'--r',label='Inner event horizon')
     pl.plot(re*np.cos(phi),re*np.sin(phi),'--g',label='Ergosphere boundary')

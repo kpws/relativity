@@ -14,7 +14,7 @@ def plotGeo(M,a):
     pl.plot(re*np.cos(phi),re*np.sin(phi),'--g',label='Ergosphere boundary')
 
     pl.axis('equal')
-    tickR=10
+    tickR=100
     pl.xticks( np.arange(-tickR,tickR+1), ['$'+sp.latex(sp.sympify(str(i)+'*M'))+'$' for i in range(-tickR,tickR+1)] )
     pl.yticks( np.arange(-tickR,tickR+1), ['$'+sp.latex(sp.sympify(str(i)+'*M'))+'$' for i in range(-tickR,tickR+1)] )
 

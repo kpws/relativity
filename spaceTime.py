@@ -29,26 +29,31 @@ class SpaceTime(object):
                         -self.g[b,c].diff(self.x[e])) for e in d)/2
           for c in d] for b in d] for a in d]
 
-    #only time-like geodesics implemented so far
-    def geodesic(self,x,u,tau,free=-1):
+    def makeNumericalFunctions(self):
         d=range(len(self.x))
+        self.gf=[[lambdify(self.x,self.g[i,j]) for j in d] for i in d]
+        self.CSf=[[[lambdify(self.x,self.CS[i][j][k]) for k in d]for j in d]for i in d]
+
+    #only time-like geodesics implemented so far
+    def geodesic(self,x,u,tau,free=-1,null=False):
+        d=range(len(self.x))
+        uu=0 if null else -1
         if free!=-1:
             u[free]=sp.symbols('x')
             sol=solve(sum(sum(u[i]*u[j]*self.g[i,j].subs(zip(self.x,x)) for j in
-                d) for i in d)+1, u[free])
+                d) for i in d)-uu, u[free])
             sol=[s for s in sol if s.is_real]
             if sol==[]:
                 raise Exception("Couldn't find time-like solution")
             u[free]=float(max(sol))
         n=len(x)
         y0=x+u
-        CSf=[[[lambdify(self.x,self.CS[i][j][k]) for k in d]for j in d]for i in d]
         def yprim(y,dummy):
             return [  y[n+i] if i < n else
-                      -sum( sum( CSf[i-n][j][k](*y[:n]) * y[n+k] for k in d) * y[n+j] for j in d)
+                      -sum( sum( self.CSf[i-n][j][k](*y[:n]) * y[n+k] for k in d) * y[n+j] for j in d)
                            for i in range(2*n) ]
         return odeint(yprim, y0, tau)
 
     def invariant(self,x,u,k=-1):
         v = u if k==-1 else self.killing[k]
-        return sum(sum(v[i]*u[j]*self.g[i,j].subs(zip(self.x,x)) for j in self.d)for i in self.d)
+        return sum(sum(v[i]*u[j]*self.gf[i][j](*x) for j in self.d)for i in self.d)

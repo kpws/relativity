@@ -4,14 +4,19 @@ import plotKerrGeo
 import kerr
 
 M=1
-a=0.9*M
+a=1*M
 
 h=kerr.Kerr(M,a)
 
 for r in range(-5,5):
-    y=h.geodesic( [0,3,0,0], [1,0,0,0.2*r], np.linspace(0,25,10000), free=0)
+    y=h.geodesic( [0,6,0,0], [1,0,0,0.02*r], np.linspace(0,25,10000), free=0)
     #print(y[0,:])
     #print(y[10,:])
+    for i in range(len(y[:,1])):
+        if y[i,1]<=0:
+            y=np.array([y[j,:] for j in range(i)])
+            print y.shape
+            break
     for i in range(-1,2):
         si=h.invariant(y[0,:4],y[0,4:],i)
         ei=h.invariant(y[-1,:4],y[-1,4:],i)

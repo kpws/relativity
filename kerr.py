@@ -52,4 +52,4 @@ class Kerr(spaceTime.SpaceTime):
         self.ginv=self.ginv.subs(subDic)
         for i,j,k in product(d,d,d):
             self.CS[i][j][k]=self.CS[i][j][k].subs(subDic)
-
+        self.makeNumericalFunctions()

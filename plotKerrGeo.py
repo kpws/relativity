@@ -2,7 +2,7 @@ import pylab as pl
 import numpy as np
 import sympy as sp
 
-def plotGeo(M,a):
+def plotGeo(M,a,text=''):
     rp=M+np.sqrt(M**2-a**2)
     rm=M-np.sqrt(M**2-a**2)
     re=M+np.sqrt(M**2-a**2*0)
@@ -15,11 +15,13 @@ def plotGeo(M,a):
 
     pl.axis('equal')
     tickR=100
-    pl.xticks( np.arange(-tickR,tickR+1), ['$'+sp.latex(sp.sympify(str(i)+'*M'))+'$' for i in range(-tickR,tickR+1)] )
-    pl.yticks( np.arange(-tickR,tickR+1), ['$'+sp.latex(sp.sympify(str(i)+'*M'))+'$' for i in range(-tickR,tickR+1)] )
+    tickMarks=['' if (i/2)*2!=i else '$'+sp.latex(sp.sympify(str(i)+'*M'))+'$' for i in range(-tickR,tickR+1)]
+    pl.xticks( np.arange(-tickR,tickR+1), tickMarks )
+    pl.yticks( np.arange(-tickR,tickR+1), tickMarks )
 
     axisR=re*1.2
     pl.axis([-axisR,axisR,-axisR,axisR])
     pl.xlabel('$r\cos(\phi)$')
     pl.ylabel('$r\sin(\phi)$')
-    pl.title('$\\theta=\pi/2$-plane of Kerr black-hole geometry, Boyer-Lindquist coordinates, $M=1$, $a='+str(a)+'$')
+    #pl.title('$\\theta=\pi/2$-plane of Kerr black-hole geometry, Boyer-Lindquist'+
+    #'coordinates, $M=1$, $a='+str(a)+'$, '+text)

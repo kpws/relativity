@@ -37,6 +37,7 @@ class Kerr(spaceTime.SpaceTime):
                     raise IOError()
                 self.ginv=cache[1]
                 self.CS=cache[2]
+                self.dCSdx=cache[3]
         except IOError:
             gdet=self.g.det().factor()
             cfm=self.g.cofactorMatrix()
@@ -45,11 +46,16 @@ class Kerr(spaceTime.SpaceTime):
             self.makeCS()
             for i,j,k in product(d,d,d):
                 self.CS[i][j][k]=self.CS[i][j][k].factor().trigsimp()
+            self.makedCSdx()
+            for i,j,k,l in product(d,d,d,d):
+                self.dCSdx[i][j][k][l]=self.dCSdx[i][j][k][l].factor().trigsimp()
             with open('kerrCache_'+coords,'w') as f:
-                pickle.dump([self.g,self.ginv,self.CS],f)
+                pickle.dump([self.g,self.ginv,self.CS,self.dCSdx],f)
         subDic={M0:M,a0:a}
         self.g=self.g.subs(subDic)
         self.ginv=self.ginv.subs(subDic)
         for i,j,k in product(d,d,d):
             self.CS[i][j][k]=self.CS[i][j][k].subs(subDic)
+        for i,j,k,l in product(d,d,d,d):
+            self.dCSdx[i][j][k][l]=self.dCSdx[i][j][k][l].subs(subDic)
         self.makeNumericalFunctions()

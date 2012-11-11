@@ -8,6 +8,7 @@ import math
 M=1.
 e=1.
 xStart=-10*M
+yStart=-8*M
 endTau=25
 
 for cw in [False, True]:
@@ -32,12 +33,20 @@ for cw in [False, True]:
             ei=h.invariant(y[-2,:4],y[-2,4:],i)
             print("Relative variation of invariant "+str(i)+
                     ": "+str(abs((si-ei)/si))+", from start to end.")
-        pl.plot( y[:,1] * np.cos(y[:,3]), y[:,1] * np.sin(y[:,3]),'k-')
+        
+        plotCoords=zip( y[:,1] * np.cos(y[:,3]), y[:,1] * np.sin(y[:,3]))
+        #remove all points outside plot because matplotlib doesn't crop the svn image correctly
+        plotCoords=[p for p in plotCoords if xStart<=p[0]<=-xStart and yStart<=p[1]<=-yStart]
+        pl.plot([p[0] for p in plotCoords],[ p[1] for p in plotCoords],'k-')
         pTau=[t for t in np.linspace(0,endTau, endTau+1) if t<=tau[-1]]
-        pl.plot( np.interp(pTau,tau,y[:,1]*np.cos(y[:,3])), np.interp(pTau,tau,y[:,1] * np.sin(y[:,3])),'ko')
+        plotCoords=zip(np.interp(pTau,tau,y[:,1]*np.cos(y[:,3])), np.interp(pTau,tau,y[:,1] * np.sin(y[:,3])))
+        #remove all points outside plot because matplotlib doesn't crop the svn image correctly
+        plotCoords=[p for p in plotCoords if xStart<=p[0]<=-xStart and yStart<=p[1]<=-yStart]
+        pl.plot([p[0] for p in plotCoords],[ p[1] for p in plotCoords],'ko')
        
     plotKerrGeo.plotGeo(M,a)
     pl.legend(loc=2)
     pl.xlim(xStart,-xStart)
+    pl.ylim(yStart,-yStart)
     pl.savefig(('cw' if cw else 'ccw')+'.svg', bbox_inches=0)
 pl.show()
